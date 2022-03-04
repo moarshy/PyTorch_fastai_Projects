@@ -63,10 +63,12 @@ def get_input(
     did = dids[0]
     print(f"DID: {did}")
 
-    filename = Path(f'/data/inputs/{did}')
-    print(f"filename: {filename}")
-    print(f"Contents of the directories {filename.ls()}")
-    return filename
+    for did in dids:
+        print('ls', f'/data/inputs/{did}/0')
+        print('ls2', os.listdir(f'/data/inputs/'))
+        filename = Path(f'/data/inputs/{did}/0')  # 0 for metadata service
+        print(f"Reading asset file {filename}.")
+        print('type', type(os.listdir(f'/data/inputs/{did}/0/')[0]))
 
 
 def get_label(
@@ -114,6 +116,19 @@ def get_df(
     print("Preparing df.")
     filename = get_input(local)
     # image_fns = get_image_files(filename)
+
+    if not filename:
+        print("Could not retrieve filename.")
+        return
+
+    from PIL import Image
+    with open(filename) as datafile:
+        print(type(datafile))
+        print(datafile)
+        datafile.seek(0)
+        img = Image.open(datafile)
+        print('@@@', img)
+
 
     image_fns = []
     for root, dirs, files in os.walk(str(filename)):
