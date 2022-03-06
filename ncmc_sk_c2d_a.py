@@ -13,7 +13,7 @@ def get_input(
         print("Reading local medicaldata directory.")
         # Root directory for dataset
         filename = Path('./data')
-        return filename, None
+        return filename
 
     dids = os.getenv('DIDS', None)
 
@@ -46,19 +46,15 @@ def get_df(
     if not results_dir.exists():
         results_dir.mkdir()
 
-    with open(f'/data/inputs/{did}/0', 'r') as f:
-        print(f"type of filename: {type(f)})
-        print(f)
-        f.seek(0)
-        img = Image.open(f)
+    with open(filename) as datafile:
+        print(type(datafile))
+        print(datafile)
+        datafile.seek(0)
+        img = Image.open(datafile)
         print('@@@', img)
 
     teal_images = sorted(list(filename.glob('*')))
     print(teal_images)
-
-    print(f"Printing samples of image filenames: {image_fns[:3]}")
-    df = pd.DataFrame(list(image_fns), columns=['fns'])
-    print(df)
 
 
 def setup_train(
