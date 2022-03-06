@@ -49,9 +49,8 @@ def get_df(
     with open(filename) as datafile:
         print(type(datafile))
         print(datafile)
-        datafile.seek(0)
-        img = Image.open(datafile)
-        print('@@@', img)
+        data = datafile.read()
+        print(data)
 
     teal_images = sorted(list(filename.glob('*')))
     print(teal_images)
