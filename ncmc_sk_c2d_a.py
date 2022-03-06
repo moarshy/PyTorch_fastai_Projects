@@ -3,6 +3,7 @@ import sys
 import json
 import pandas as pd
 from pathlib import Path
+from PIL import Image
 
 
 def get_input(
@@ -10,10 +11,8 @@ def get_input(
 ):
     if local:
         print("Reading local medicaldata directory.")
-
         # Root directory for dataset
         filename = Path('./data')
-
         return filename, None
 
     dids = os.getenv('DIDS', None)
@@ -32,33 +31,35 @@ def get_input(
 
     for did in dids:
         print('ls', f'/data/inputs/{did}/0')
-        print('ls2', os.listdir(f'/data/inputs/'))
-        print('ls3', os.listdir(f'/data/ddos/'))
+        filename = Path(f'/data/inputs/{did}/0')
 
-        filename = Path('/data/')
-
-        return filename, did
+        return filename
 
 
 def get_df(
     local:bool, # Flag to indicate local vs C2D
 ):
     print("Preparing df.")
-    filename, did = get_input(local)
+    filename = get_input(local)
 
-    image_fns = []
-    for root, dirs, files in os.walk(str(filename)):
-        path = root.split(os.sep)
-        print((len(path) - 1) * '---', os.path.basename(root))
-        for file in files:
-            fn = os.path.join(root,file)
-            if fn.split('.')[-1] in ['jpeg', 'jpg', 'png']:
-                image_fns.append(fn)
-            print(len(path) * '---', file)
+    results_dir = Path('results')
+    if not results_dir.exists():
+        results_dir.mkdir()
+
+    with open(f'/data/inputs/{did}/0', 'r') as f:
+        print(f"type of filename: {type(f)})
+        print(f)
+        f.seek(0)
+        img = Image.open(f)
+        print('@@@', img)
+
+    teal_images = sorted(list(filename.glob('*')))
+    print(teal_images)
 
     print(f"Printing samples of image filenames: {image_fns[:3]}")
     df = pd.DataFrame(list(image_fns), columns=['fns'])
     print(df)
+
 
 def setup_train(
     local:bool, # Flag to indicate local vs C2D
