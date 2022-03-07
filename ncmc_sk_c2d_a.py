@@ -30,8 +30,8 @@ def get_input(
     print(f"DID: {did}")
 
     for did in dids:
-        print('ls', f'/data/inputs/{did}/0')
-        filename = Path(f'/data/inputs/{did}/0')
+        print('ls', Path(f'/data/inputs/{did}').ls())
+        filename = Path(f'/data/inputs/{did}')
 
         return filename
 
