@@ -44,7 +44,7 @@ def get_df(
 
     results_dir = Path('results')
     if not results_dir.exists():
-        results_dir.mkdir(
+        results_dir.mkdir()
 
     data = Path('data')
     if not data.exists():
