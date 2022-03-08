@@ -49,16 +49,36 @@ def get_df(
     if not data.exists():
         data.mkdir()
 
-    with open(filename) as datafile:
-        print(type(datafile))
-        print(datafile)
-        data = datafile.read()
-        print(data)
+    # with open(filename) as datafile:
+    #     print(type(datafile))
+    #     print(datafile)
+    #     data = datafile.read()
+    #     print(data)
+    try:
+        print(type(filename))
+        fns = []
+        for root, dirs, files in os.walk(str(filename)):
+            path = root.split(os.sep)
+            print((len(path) - 1) * '---', os.path.basename(root))
+            for file in files:
+                fn = os.path.join(root,file)
+                if fn.split('.')[-1] in ['jpeg', 'jpg', 'png']:
+                    fns.append(fn)
+                print(len(path) * '---', file)
 
-    with zipfile.ZipFile(filename, 'r') as zip_ref:
-        zip_ref.extractall(str(data))
+    except:
+        with zipfile.ZipFile(filename, 'r') as zip_ref:
+            zip_ref.extractall(str(data))
 
-    print(f'data dir {data.ls()}')
+        for root, dirs, files in os.walk(str(data)):
+            path = root.split(os.sep)
+            print((len(path) - 1) * '---', os.path.basename(root))
+            for file in files:
+                fn = os.path.join(root,file)
+                if fn.split('.')[-1] in ['jpeg', 'jpg', 'png']:
+                    fns.append(fn)
+                print(len(path) * '---', file)
+
 
 def setup_train(
     local:bool, # Flag to indicate local vs C2D
