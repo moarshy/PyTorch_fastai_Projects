@@ -30,7 +30,7 @@ def get_input(
     print(f"DID: {did}")
 
     for did in dids:
-        filename = Path(f'/data/inputs/{did}')
+        filename = Path(f'/data/inputs/{did}/0')
 
         return filename
 
@@ -48,12 +48,17 @@ def get_df(
     data = Path('data')
     if not data.exists():
         data.mkdir()
+    try:
+        with open(filename) as datafile:
+            print(type(datafile))
+            print(datafile)
+            data = datafile.read()
+            print(data)
+            print('_____________________________________________')
+    except:
+        print('_____________________________________________')
+        pass
 
-    # with open(filename) as datafile:
-    #     print(type(datafile))
-    #     print(datafile)
-    #     data = datafile.read()
-    #     print(data)
     try:
         print(type(filename))
         fns = []
