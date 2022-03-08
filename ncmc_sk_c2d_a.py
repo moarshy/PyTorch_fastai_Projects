@@ -50,16 +50,18 @@ def get_df(
         data.mkdir()
     try:
         with open(filename) as datafile:
+            print('check if its a html')
             print(type(datafile))
-            print(datafile)
             data = datafile.read()
             print(data)
             print('_____________________________________________')
     except:
+        print('except - check if its a html')
         print('_____________________________________________')
         pass
 
     try:
+        print('lets see if its unzipped')
         print(type(filename))
         fns = []
         for root, dirs, files in os.walk(str(filename)):
@@ -72,9 +74,12 @@ def get_df(
                 print(len(path) * '---', file)
 
     except:
+        print('lets unzip and print files')
         with zipfile.ZipFile(filename, 'r') as zip_ref:
             zip_ref.extractall(str(data))
 
+        print(f"data folder exists: {os.path.exists(str(data))}")
+        
         for root, dirs, files in os.walk(str(data)):
             path = root.split(os.sep)
             print((len(path) - 1) * '---', os.path.basename(root))
