@@ -4,7 +4,7 @@ import json
 import pandas as pd
 from pathlib import Path
 from PIL import Image
-
+import zipfile
 
 def get_input(
     local:bool=False, # Flag to indicate local vs C2D
@@ -44,7 +44,11 @@ def get_df(
 
     results_dir = Path('results')
     if not results_dir.exists():
-        results_dir.mkdir()
+        results_dir.mkdir(
+
+    data = Path('data')
+    if not data.exists():
+        data.mkdir()
 
     with open(filename) as datafile:
         print(type(datafile))
@@ -52,9 +56,10 @@ def get_df(
         data = datafile.read()
         print(data)
 
-    teal_images = sorted(list(filename.glob('*')))
-    print(teal_images)
+    with zipfile.ZipFile(filename, 'r') as zip_ref:
+        zip_ref.extractall(str(data))
 
+    print(f'data dir {data.ls()}')
 
 def setup_train(
     local:bool, # Flag to indicate local vs C2D
