@@ -74,12 +74,15 @@ def get_df(
                 print(len(path) * '---', file)
 
     except:
+        pass
+
+    try:
         print('lets unzip and print files')
         with zipfile.ZipFile(filename, 'r') as zip_ref:
             zip_ref.extractall(str(data))
 
         print(f"data folder exists: {os.path.exists(str(data))}")
-        
+
         for root, dirs, files in os.walk(str(data)):
             path = root.split(os.sep)
             print((len(path) - 1) * '---', os.path.basename(root))
@@ -88,6 +91,8 @@ def get_df(
                 if fn.split('.')[-1] in ['jpeg', 'jpg', 'png']:
                     fns.append(fn)
                 print(len(path) * '---', file)
+    except:
+        pass
 
 
 def setup_train(
